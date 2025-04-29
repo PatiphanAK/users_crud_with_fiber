@@ -1,0 +1,155 @@
+openapi: 3.0.4
+info:
+  title: MyBook API - OpenAPI 3.0
+  description: This is my OpenAPI Specification for book API.
+  contact:
+    email: patiphan3new1@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.12
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: user
+    description: Operations about user
+
+paths:
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get all users with pagination
+      operationId: GetUsers
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+          description: Maximum number of users to return per page
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: The starting index of the first user to return
+      responses:
+        '200':
+          description: Successful response with paginated users
+          headers:
+            X-Total-Count:
+              description: Total number of users available
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - user
+      summary: Create a user
+      operationId: CreateUser
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+        - in: query
+          name: email
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Successful create user
+    
+  /users/{uuid}:
+    get:
+      tags:
+        - user
+      summary: Get a specific user by ID
+      operationId: GetUserById
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+          description: The ID of the user to retrieve
+      responses:
+        '200':
+          description: Successful response with the user data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          
+    patch:
+      tags:
+        - user
+      summary: Update a specific user by ID
+      operationId: UpdateUser
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+          description: The ID of the user to update
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: The updated name of the user
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: The updated email of the user
+      responses:
+        '200':
+          description: Successful update of the user
+        '404':
+          description: User not found
+        
+    delete:
+      tags:
+        - user
+      summary: Delete a specific user by ID
+      operationId: DeleteUser
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+          description: The ID of the user to delete
+      responses:
+        '200':
+          description: Successful deletion of the user
+        '404':
+          description: User not found
+        
+    
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: patiphan akkahadsri
+        email:
+          type: string
+          example: patiphan3new1@gmail.com
+

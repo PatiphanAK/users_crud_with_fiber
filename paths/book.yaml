@@ -1,0 +1,120 @@
+books:
+  get:
+    tags:
+      - book
+    summary: Get all books with pagination
+    operationId: getBooks
+    parameters:
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+        description: Maximum number of books to return per page
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        description: The starting index of the first book to return
+    responses:
+      '200':
+        description: Successful response with paginated books
+        headers:
+          X-Total-Count:
+            description: Total number of books available
+            schema:
+              type: integer
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/book.yaml#/Book'
+  post:
+    tags:
+      - book
+    summary: Create a book
+    operationId: createBook
+    parameters:
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: user
+        schema:
+          type: integer
+        description: The user ID who created the book
+    responses:
+      '201':
+        description: Successful create book
+
+books_id:
+  get:
+    tags:
+      - book
+    summary: Get a specific book by ID
+    operationId: getBookById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The ID of the book to retrieve
+    responses:
+      '200':
+        description: Successful response with the book data
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/book.yaml#/Book'
+      '404':
+        description: Book not found
+  patch:
+    tags:
+      - book
+    summary: Update a specific book by ID
+    operationId: updateBook
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The ID of the book to update
+      - in: query
+        name: title
+        schema:
+          type: string
+        description: The updated title of the book
+      - in: query
+        name: user
+        schema:
+          type: integer
+        description: The user ID associated with the book
+    responses:
+      '200':
+        description: Successful update of the book
+      '404':
+        description: Book not found
+  delete:
+    tags:
+      - book
+    summary: Delete a specific book by ID
+    operationId: deleteBook
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The ID of the book to delete
+    responses:
+      '200':
+        description: Successful deletion of the book
+      '404':
+        description: Book not found

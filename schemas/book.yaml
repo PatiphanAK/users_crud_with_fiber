@@ -1,0 +1,13 @@
+Book:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 1
+    title:
+      type: string
+      example: My hero academy
+    user:
+      type: integer
+      description: The user ID associated with the book
+      example: 1
