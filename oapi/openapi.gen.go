@@ -16,6 +16,7 @@ type User struct {
 	Email *string `json:"email,omitempty"`
 	Id    *int    `json:"id,omitempty"`
 	Name  *string `json:"name,omitempty"`
+	Uuid  *string `json:"uuid,omitempty"`
 }
 
 // GetUsersParams defines parameters for GetUsers.

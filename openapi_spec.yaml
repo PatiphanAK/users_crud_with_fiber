@@ -152,4 +152,7 @@ components:
         email:
           type: string
           example: patiphan3new1@gmail.com
+        uuid:
+          type: string
+          example: c66b38ef-f23f-44c3-a0e9-dfd63d38b1ff
 

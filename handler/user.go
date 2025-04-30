@@ -42,10 +42,16 @@ func (h *UserHandler) GetUsers(c *fiber.Ctx, params api.GetUsersParams) error {
 			Id:    &id,
 			Name:  &user.Name,
 			Email: &user.Email,
+			Uuid: &user.UUID,
 		}
 	}
 
-	return c.JSON(apiUsers)
+	return c.JSON(
+		fiber.Map{
+			"total":len(users),
+			"data":apiUsers,
+		},
+	)
 }
 
 func (h *UserHandler) GetUserById(c *fiber.Ctx, uuid string) error {

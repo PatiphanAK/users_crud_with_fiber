@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"tatar/book/.gen/mydb/model"
 	"tatar/book/.gen/mydb/table"
 
@@ -30,6 +31,7 @@ func (r *MySQLUserRepository) GetUserByUUID(id string) (*model.User, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error querying user: %w", err)
 	}
+	
 	return &user, nil
 }
 
@@ -38,6 +40,7 @@ func (r *MySQLUserRepository) GetUsers(limit int, offset int) ([]*model.User, er
 		table.User.ID,
 		table.User.Name,
 		table.User.Email,
+		table.User.UUID,
 	).FROM(
 		table.User,
 	).LIMIT(int64(limit)).
@@ -48,7 +51,6 @@ func (r *MySQLUserRepository) GetUsers(limit int, offset int) ([]*model.User, er
 	if err != nil {
 		return nil, fmt.Errorf("error listing users: %w", err)
 	}
-
 	return users, err
 }
 
@@ -82,18 +84,17 @@ func (r *MySQLUserRepository) GetUserByName(name string) (*model.User, error) {
 
 func (r *MySQLUserRepository) CreateUser(user *model.User) (*model.User, error) {
 	stmt := table.User.INSERT(
-		table.User.ID,
 		table.User.Name,
 		table.User.Email,
 		table.User.UUID,
 	).VALUES(
-		mysql.Int64(int64(user.ID)),
 		mysql.String(user.Name),
 		mysql.String(user.Email),
 		mysql.String(user.UUID),
 	)
 	_, err := stmt.Exec(r.db)
 	if err != nil {
+		log.Println(err)
 		return nil, fmt.Errorf("error inserting user: %w", err)
 	}
 	return user, err
