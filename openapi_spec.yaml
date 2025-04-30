@@ -36,6 +36,18 @@ paths:
             minimum: 0
             default: 0
           description: The starting index of the first user to return
+        - in: query
+          name: name
+          schema:
+            type: string
+            default: ""
+          description: search by name
+        - in: query
+          name: email
+          schema:
+            type: string
+            default: ""
+          description: search by email
       responses:
         '200':
           description: Successful response with paginated users
@@ -155,4 +167,3 @@ components:
         uuid:
           type: string
           example: c66b38ef-f23f-44c3-a0e9-dfd63d38b1ff
-

@@ -26,6 +26,12 @@ type GetUsersParams struct {
 
 	// Offset The starting index of the first user to return
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Name search by name
+	Name *string `form:"name,omitempty" json:"name,omitempty"`
+
+	// Email search by email
+	Email *string `form:"email,omitempty" json:"email,omitempty"`
 }
 
 // CreateUserParams defines parameters for CreateUser.
@@ -95,6 +101,20 @@ func (siw *ServerInterfaceWrapper) GetUsers(c *fiber.Ctx) error {
 	err = runtime.BindQueryParameter("form", true, false, "offset", query, &params.Offset)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "name" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "name", query, &params.Name)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter name: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "email" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "email", query, &params.Email)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter email: %w", err).Error())
 	}
 
 	return siw.Handler.GetUsers(c, params)

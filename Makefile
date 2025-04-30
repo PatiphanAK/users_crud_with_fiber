@@ -11,5 +11,5 @@ full: oapi-gen jet
 	echo "All code generation tasks completed successfully."
 	go mod tidy
 	echo "Go modules tidied up."
-	go run main.go
-	echo "Running the application..."
+	go build main.go
+	./main
